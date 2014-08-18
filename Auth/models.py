@@ -47,7 +47,7 @@ class CustomUser(AbstractBaseUser):
 
     username  = models.CharField(max_length=254, unique=False)
     email     = models.EmailField(blank=True, unique=True)
-    cell      = models.CharField(max_length=20, unique=False, blank=True, verbose_name='(Optional) Cell # eg.6171231234')
+    cell      = models.CharField(max_length=20, unique=False, blank=True, verbose_name='(Optional) Cell #')
     verified  = models.BooleanField(default=False)
     carrier = models.CharField(max_length=2, choices=CARRIER_CHOICES, default='NONE', verbose_name='(Optional) Carrier')
     alias   = models.CharField(max_length=15, unique=False, blank=True, verbose_name='(Optional) Alias')
