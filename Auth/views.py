@@ -13,8 +13,8 @@ from django.core.mail import send_mail, EmailMultiAlternatives
 
 from forms import CustomUserCreationForm, CustomUserChangeForm
 from Auth.models import CustomUser as User
-import logging
 from Crypto.Cipher import AES
+import logging
 import base64
 import string
 
@@ -79,7 +79,6 @@ def register_user(request):
         except:
             pass
 
-
         if form.is_valid():
             form.save()
 
@@ -98,10 +97,12 @@ def register_user(request):
             send_verification_email(subject, from_email, to, verify_url) 
 
             if user_id != 0:
+            # if cell # entered, send SMS confirmation message
                 user = User.objects.get(pk=user_id)
                 text = "Your account has been created. "
                 cell = filter(lambda c: c in string.digits + '', user.cell)
-                send_sms_msg('Notification', text, from_email, cell, user.carrier)
+                if len(cell) > 0:
+                    send_sms_msg('Notification', text, from_email, cell, user.carrier)
 
             if len(form.cleaned_data['alias']) == 0:
                 try:  # default alias to email prefix
@@ -132,7 +133,6 @@ def user_profile(request):
 
     else:
         user = request.user
-#        profile = user.profile
         form = CustomUserChangeForm(instance=user)
 
     args = {}
@@ -144,7 +144,6 @@ def user_profile(request):
 
 
 def verify_user(request, user_id=None):
-
     try:
         user_id = decode(user_id)   # decode the user_id passed in url
         record = User.objects.get(pk=int(user_id))
@@ -186,6 +185,10 @@ def send_sms_msg(subject, message, from_email, cell, carrier):
         cell_email = '@messaging.sprintpcs.com'
     elif carrier == 'TM':
         cell_email = '@tmomail.net'
+    elif carrier == 'VM':
+        cell_email = '@vmobl.com'
+    elif carrier == 'CI':
+        cell_email = '@cingularme.com'
     else:
         cell_email = '@'
 

@@ -33,12 +33,16 @@ class CustomUser(AbstractBaseUser):
     VERIZON = 'VE'
     SPRINT = 'SP'
     TMOBILE = 'TM'
+    VIRGIN = 'VM'
+    CINGULAR = 'CI'
     CARRIER_CHOICES = (
         (NONE, 'None'),
         (ATT, 'AT&T'),
         (VERIZON, 'Verizon'),
         (SPRINT, 'Sprint'),
         (TMOBILE, 'T-Mobile'),
+        (VIRGIN, 'Virgin-Mobile'),
+        (CINGULAR, 'Cingular'),
     )
 
     username  = models.CharField(max_length=254, unique=False)
