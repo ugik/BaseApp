@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block navbar_class-profile %} active {% endblock %}
+
+{% load bootstrap_toolkit %}
+
+{% block content %}
+
+<h2>Profile</h2>
+<form action="/user/profile/" method="post">{% csrf_token %}
+
+    {% bootstrap_form form layout="vertical" %}
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+</form>
+
+{% endblock %}

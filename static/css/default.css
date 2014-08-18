@@ -1,0 +1,36 @@
+body {
+    background-attachment: fixed;
+    background-color: #FFFFFF;
+    background-image: url(/static/images/paper.jpg);
+    background-position: center top;
+    background-repeat: repeat;
+    color: #000;
+    margin: 20;
+    padding: 20;
+	test-align: center;
+    margin-top:2cm;
+	}
+
+	#page {
+		width: 960px;
+		test-align: left;
+		margin: 10px auto 20px auto;
+		backgroun-color: #0c0c0c;
+	}
+
+	#sidebar {
+		float: left;
+        padding-left:10px;
+		width: 200px;
+		border: 0px solid #a00;
+	}
+
+	#content {
+		float: left;
+		width: 600px;
+		border: 1pm solid #f00;
+		padding: 10px;
+	}
+
+
+

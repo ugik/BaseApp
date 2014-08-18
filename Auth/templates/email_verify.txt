@@ -1,0 +1,1 @@
+To verify your registration please visit: {{ verify_url }}

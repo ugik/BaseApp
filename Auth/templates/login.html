@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block navbar_class-login %} active {% endblock %}
+
+{% block content %}
+{% if form.errors %}
+    <p class="error">Sorry, that's not a valid username or password</p>
+{% endif %}
+
+    <div class="container">
+
+      <form class="form-signin" role="form" action="/user/auth/" method="post">
+{% csrf_token %}
+        <h4 class="form-signin-heading">Please sign in</h4>
+        <input type="text" class="form-control" placeholder="Username" name="username" id="username" required autofocus>
+        <input type="password" class="form-control" placeholder="Password" name="password" id="password" required>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+      </form>
+    </div>
+
+
+{% endblock %}
