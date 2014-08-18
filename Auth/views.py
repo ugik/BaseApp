@@ -6,6 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.template.loader import get_template
 from django.template import Context
 from django.template import RequestContext
+from django.conf import settings
 
 from django.contrib.formtools.wizard.views import SessionWizardView
 from django.core.mail import send_mail, EmailMultiAlternatives
@@ -15,6 +16,7 @@ from Auth.models import CustomUser as User
 import logging
 from Crypto.Cipher import AES
 import base64
+import string
 
 logr = logging.getLogger(__name__)
 secret_key = "1234567890123456"
@@ -95,6 +97,12 @@ def register_user(request):
             verify_url = request.build_absolute_uri()+pad
             send_verification_email(subject, from_email, to, verify_url) 
 
+            if user_id != 0:
+                user = User.objects.get(pk=user_id)
+                text = "Your account has been created. "
+                cell = filter(lambda c: c in string.digits + '', user.cell)
+                send_sms_msg('Notification', text, from_email, cell, user.carrier)
+
             if len(form.cleaned_data['alias']) == 0:
                 try:  # default alias to email prefix
                     email = form.cleaned_data['email']
@@ -163,6 +171,26 @@ def send_verification_email(subject, from_email, to, verify_url):
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
     msg.attach_alternative(html_content, "text/html")
     msg.send()
+
+    return True
+
+def send_sms_msg(subject, message, from_email, cell, carrier):
+    cell_email = ''
+    if carrier == 'NO':
+        cell_email = '@'
+    elif carrier == 'AT':
+        cell_email = '@txt.att.net'
+    elif carrier == 'VE':
+        cell_email = '@vtext.com'
+    elif carrier == 'SP':
+        cell_email = '@messaging.sprintpcs.com'
+    elif carrier == 'TM':
+        cell_email = '@tmomail.net'
+    else:
+        cell_email = '@'
+
+    if cell_email != '@':
+        send_mail(subject, message, from_email, [cell+cell_email], fail_silently=True)
 
     return True
 
