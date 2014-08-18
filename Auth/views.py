@@ -120,7 +120,7 @@ def user_profile(request):
         form = CustomUserChangeForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/user/loggedin')
+            return HttpResponseRedirect('/')
 
     else:
         user = request.user
