@@ -29,15 +29,20 @@ git clone https://github.com/$repo/$project.git
 sudo rm /etc/apache2/httpd.conf
 sudo touch /etc/apache2/httpd.conf
 sudo chmod 777 /etc/apache2/*.conf
+sudo echo "SetEnv EMAIL_PASSWORD (EMAILPASSWORD)" >> /etc/apache2/httpd.conf
+sudo echo " " >> /etc/apache2/httpd.conf
+
 sudo echo "Alias /static /home/ubuntu/"$project"/static" >> /etc/apache2/httpd.conf
 sudo echo "WSGIScriptAlias / /home/ubuntu/"$project_app"/wsgi.py" >> /etc/apache2/httpd.conf
 sudo echo "WSGIPythonPath /home/ubuntu/"$project >> /etc/apache2/httpd.conf
+sudo echo " " >> /etc/apache2/httpd.conf
 
-sudo echo "<Directory /home/ubuntu/"$project_app">" >> /etc/apache2/httpd.conf
+sudo echo "<Directory /home/ubuntu/"$project">" >> /etc/apache2/httpd.conf
 sudo echo "Options All" >> /etc/apache2/httpd.conf
 sudo echo "AllowOverride All" >> /etc/apache2/httpd.conf
 sudo echo "Require all granted" >> /etc/apache2/httpd.conf
 sudo echo "</Directory>" >> /etc/apache2/httpd.conf
+sudo echo " " >> /etc/apache2/httpd.conf
 
 sudo echo "<Directory /home/ubuntu/"$project_app">" >> /etc/apache2/httpd.conf
 sudo echo "<Files wsgi.py>" >> /etc/apache2/httpd.conf
@@ -76,7 +81,7 @@ chmod +x post-receive
 cd ~
 
 cd /home/ubuntu/$project/$project_app
-rm local_settings.py          # remove local settings
+rm local_settings.*          # remove local settings
 sudo service apache2 restart
 
 # references:

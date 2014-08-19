@@ -78,16 +78,8 @@ DATABASES = {
         },
     }
 
-# grab email pw from parent directory (not in repo)
-# this is work-around until figure out how to set env vars on EC2 instance
-PARENT_DIR = os.path.abspath(os.path.dirname(__file__) + "/../../")
-fname = PARENT_DIR+'/.email'
-if os.path.isfile(fname):
-	EMAIL_HOST_PASSWORD = open(fname, 'r').read()[:16]
-else:
-	EMAIL_HOST_PASSWORD = ""
-
 # gmail SMTP setup
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_PASSWORD']
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
