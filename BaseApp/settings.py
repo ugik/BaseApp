@@ -71,10 +71,12 @@ WSGI_APPLICATION = 'BaseApp.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE' : 'django.db.backends.mysql',
+        'NAME' : 'data',
+        'USER' : 'django',
+        'PASSWORD' : 'django',
+        },
     }
-}
 
 # grab email pw from parent directory (not in repo)
 # this is work-around until figure out how to set env vars on EC2 instance

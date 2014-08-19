@@ -55,8 +55,7 @@ def invalid_login(request):
 # delete data
     from Auth.models import CustomUser as User
     try:
-        record = User.objects.get(pk=1)
-        record.delete()
+        User.objects.all().delete()
     except:
         pass
 
@@ -167,9 +166,12 @@ def send_verification_email(subject, from_email, to, verify_url):
 
     text_content = plaintext.render(d)
     html_content = htmly.render(d)
-    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-    msg.attach_alternative(html_content, "text/html")
-    msg.send()
+    try:
+        msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
+    except:
+        pass
 
     return True
 

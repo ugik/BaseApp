@@ -13,7 +13,10 @@ sudo apt-get -y upgrade
 sudo apt-get -y install apache2 libapache2-mod-wsgi
 sudo apt-get -y install python-pip
 sudo pip install django
+sudo pip install django-bootstrap-toolkit
 sudo pip install south
+sudo apt-get install autoconf g++ python2.7-dev <<< 'Y'
+sudo pip install pycrypto
 sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password mysql'
 sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password mysql'
 sudo apt-get -y install mysql-server python-mysqldb
@@ -29,10 +32,15 @@ sudo chmod 777 /etc/apache2/*.conf
 sudo echo "Alias /static /home/ubuntu/"$project"/static" >> /etc/apache2/httpd.conf
 sudo echo "WSGIScriptAlias / /home/ubuntu/"$project_app"/wsgi.py" >> /etc/apache2/httpd.conf
 sudo echo "WSGIPythonPath /home/ubuntu/"$project >> /etc/apache2/httpd.conf
+
+sudo echo "<Directory /home/ubuntu/"$project_app">" >> /etc/apache2/httpd.conf
+sudo echo "Options All" >> /etc/apache2/httpd.conf
+sudo echo "AllowOverride All" >> /etc/apache2/httpd.conf
+sudo echo "Require all granted" >> /etc/apache2/httpd.conf
+sudo echo "</Directory>" >> /etc/apache2/httpd.conf
+
 sudo echo "<Directory /home/ubuntu/"$project_app">" >> /etc/apache2/httpd.conf
 sudo echo "<Files wsgi.py>" >> /etc/apache2/httpd.conf
-sudo echo "    Order deny,allow" >> /etc/apache2/httpd.conf
-sudo echo "    Allow from all" >> /etc/apache2/httpd.conf
 sudo echo "    Require all granted" >> /etc/apache2/httpd.conf
 sudo echo "</Files>" >> /etc/apache2/httpd.conf
 sudo echo "</Directory>" >> /etc/apache2/httpd.conf
@@ -41,8 +49,6 @@ sudo echo " " >> /etc/apache2/httpd.conf
 # set permissions for static files
 sudo echo "<Directory /home/ubuntu/"$project"/static>" >> /etc/apache2/httpd.conf
 sudo echo "<Files wsgi.py>" >> /etc/apache2/httpd.conf
-sudo echo "    Order deny,allow" >> /etc/apache2/httpd.conf
-sudo echo "    Allow from all" >> /etc/apache2/httpd.conf
 sudo echo "    Require all granted" >> /etc/apache2/httpd.conf
 sudo echo "</Files>" >> /etc/apache2/httpd.conf
 sudo echo "</Directory>" >> /etc/apache2/httpd.conf
@@ -57,8 +63,6 @@ cd ~
 mysql -u root -pmysql -e "create database data; GRANT ALL PRIVILEGES ON data.* TO django@localhost IDENTIFIED BY 'django'"
 mysql -u root -pmysql data < data.sql
 
-sudo service apache2 restart
-
 # setup remote git repo and hooks
 mkdir $project.com.git
 cd $project.com.git
@@ -70,6 +74,10 @@ sudo echo "export GIT_WORK_TREE" >> post-receive
 sudo echo "git checkout -f" >> post-receive
 chmod +x post-receive
 cd ~
+
+cd /home/ubuntu/$project/$project_app
+rm local_settings.py          # remove local settings
+sudo service apache2 restart
 
 # references:
 # Ubuntu 14.x remote LAMP setup: http://nickpolet.com/blog/1/
