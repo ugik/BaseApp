@@ -79,6 +79,8 @@ DATABASES = {
     }
 
 # gmail SMTP setup
+# for local server, export var in ~/.bashrc
+# for apache server, SetEnv var in /etc/apache2/httpd.conf
 EMAIL_HOST_PASSWORD = os.environ['EMAIL_PASSWORD']
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'

@@ -12,6 +12,8 @@ class WSGIEnvironment(WSGIHandler):
 
     def __call__(self, environ, start_response):
 
+        # for local server, export var in ~/.bashrc
+        # for apache server, SetEnv var in /etc/apache2/httpd.conf
         os.environ['EMAIL_PASSWORD'] = environ['EMAIL_PASSWORD']
         return super(WSGIEnvironment, self).__call__(environ, start_response)
 
